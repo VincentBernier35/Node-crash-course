@@ -1,6 +1,8 @@
 
-
 const express = require('express');
+const morgan = require('morgan');
+
+
 
 // express app
 const app = express();
@@ -12,8 +14,10 @@ app.set('view engine', 'ejs');
 app.listen(3000);
 
 
+app.use(morgan('dev'));
 
-app.get('/', (req, res) => {
+
+app.get('/', (req, res, next) => {
 const blogs = [
     {title: 'Yoshi finds eggs', snippet: 'lorem ipsum dolor sit amet consectetur'},
     {title: 'Mario finds eggs', snippet: 'lorem ipsum dolor sit amet consectetur'},
