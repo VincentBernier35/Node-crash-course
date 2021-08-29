@@ -19,10 +19,7 @@ const blogs = [
     {title: 'Mario finds eggs', snippet: 'lorem ipsum dolor sit amet consectetur'},
     {title: 'How to defeat bowser', snippet: 'lorem ipsum dolor sit amet consectetur'},
 ];
-
-
-
-    res.render('index', { title: "home", blogs });
+    res.render('index', { title: "home", blogs});
 });
 
 
@@ -32,7 +29,7 @@ app.get('/about', (req, res) => {
 
 
 app.get('/blogs/create', (req, res) => {
-    res.render('create', { title: "New blog"});
+    res.render('create', { title: "Create a new blog"});
 });
 
 
