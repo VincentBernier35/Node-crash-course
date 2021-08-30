@@ -2,7 +2,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-
+const Blog = require('./models/blog');
 
 
 
@@ -14,15 +14,13 @@ const app = express();
 // connect to mongoDB
 const dbURI =  'mongodb+srv://Vincent:Coucou223511@cluster0.jbqrn.mongodb.net/node-tuts?retryWrites=true&w=majority';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then((result) => console.log('connected to db'))
+    .then((result) => app.listen(3000))
     .catch((err) => console.log(err));
 
 
 // register view engine
 app.set('view engine', 'ejs');
 
-// listen for requests
-app.listen(3000);
 
 
 //Middleware & static file 
@@ -31,21 +29,30 @@ app.use(express.static('public'));
 app.use(morgan('dev'));
 
 
+// routes     +     home page
 app.get('/', (req, res, next) => {
-const blogs = [
-    {title: 'Yoshi finds eggs', snippet: 'lorem ipsum dolor sit amet consectetur'},
-    {title: 'Mario finds eggs', snippet: 'lorem ipsum dolor sit amet consectetur'},
-    {title: 'How to defeat bowser', snippet: 'lorem ipsum dolor sit amet consectetur'},
-];
-    res.render('index', { title: "home", blogs});
+    res.redirect('/blogs');
 });
 
-
+// page about
 app.get('/about', (req, res) => {
-    res.render('about', { title: "about"});
+    res.render('about', { title: "About"});
 });
 
+// blog routes
+app.get('/blogs', (req, res) => {
+    Blog.find().sort( { createdAt: -1 })
+        .then((result) => {
+            res.render('index', { title: 'All Blogs ', blogs: result});
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 
+})
+
+
+// page create
 app.get('/blogs/create', (req, res) => {
     res.render('create', { title: "Create a new blog"});
 });
